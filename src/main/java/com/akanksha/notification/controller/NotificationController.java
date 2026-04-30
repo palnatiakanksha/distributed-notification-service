@@ -1,7 +1,7 @@
 package com.akanksha.notification.controller;
 
 import com.akanksha.notification.kafka.NotificationProducer;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.akanksha.notification.model.NotificationRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,8 +20,8 @@ public class NotificationController {
     }
 
     @PostMapping
-    public String sendNotification(@RequestBody String message) {
-        producer.sendNotification(message);
-        return "Notification sent!";
+    public String sendNotification(@RequestBody NotificationRequest request) {
+        producer.sendNotification(request.getMessage());
+        return "Notification sent to " + request.getRecipient() + " via " + request.getChannel();
     }
 }
