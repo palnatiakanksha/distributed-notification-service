@@ -1,15 +1,27 @@
-package com.akanksha.notification.controllerontroller;
+package com.akanksha.notification.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.akanksha.notification.kafka.NotificationProducer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/notifications")
 public class NotificationController {
 
-    @GetMapping("/hello")
-    public String hello() {
+    private final NotificationProducer producer;
+
+    public NotificationController(NotificationProducer producer) {
+        this.producer = producer;
+    }
+
+    @GetMapping
+    public String test() {
         return "Application is running!";
+    }
+
+    @PostMapping
+    public String sendNotification(@RequestBody String message) {
+        producer.sendNotification(message);
+        return "Notification sent!";
     }
 }
